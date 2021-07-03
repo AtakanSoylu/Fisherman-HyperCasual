@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef0954fef44b374bb3b2706808c5c4f, type: 3}
   m_Name: HookControllerSettings_Default
   m_EditorClassIdentifier: 
-  _length: 0
-  _strength: 0
+  _length: -50
+  _strength: 3
   _fishCount: 0
