@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace FisherMan.Fish
 {
-    public class Fish : MonoBehaviour
+    public class FishController : MonoBehaviour
     {
         [SerializeField] private CircleCollider2D _circleColl;
         [SerializeField] private SpriteRenderer _spriteRenderer;
