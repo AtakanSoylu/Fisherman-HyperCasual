@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using FisherMan.PlayerInput;
+using FisherMan.Fish;
 using System;
 
 namespace FisherMan.Hook
@@ -23,7 +24,13 @@ namespace FisherMan.Hook
 
         private bool canMove = true;
 
+        private List<FishController> _hookedFishList;
 
+
+        private void Awake()
+        {
+            _hookedFishList = new List<FishController>();
+        }
 
         private void Update()
         {
@@ -67,7 +74,7 @@ namespace FisherMan.Hook
 
             _colider2D.enabled = false;
             canMove = true;
-
+            _hookedFishList.Clear();
         }
 
         private void StopFishing()
@@ -89,7 +96,43 @@ namespace FisherMan.Hook
                 transform.position = Vector2.down * 6;
                 _colider2D.enabled = true;
                 int num = 0;
+                for (int i = 0; i < _hookedFishList.Count; i++)
+                {
+                    _hookedFishList[i].transform.SetParent(null);
+                    _hookedFishList[i].ResetFish();
+                    num += _hookedFishList[i].fishType.price;
+                }
             });
         }
+
+        private void OnTriggerEnter2D(Collider2D target)
+        {
+            FishController fish = target.GetComponent<FishController>();
+            if (fish != null)
+            {
+                if (_hookControllerSettings.Strength != _hookControllerSettings.FishCount)
+                {
+                    _hookControllerSettings.FishCount++;
+                    fish.Hooked();
+                    _hookedFishList.Add(fish);
+                    fish.transform.SetParent(transform);
+                    fish.transform.position = _hookedTransform.position;
+                    fish.transform.rotation = _hookedTransform.rotation;
+                    fish.transform.localScale = Vector3.one;
+
+                    fish.transform.DOShakeRotation(5, Vector3.forward * 45, 10, 90, false).SetLoops(1, LoopType.Yoyo).OnComplete(delegate
+                    {
+                        fish.transform.rotation = Quaternion.identity;
+                    });
+                    if (_hookControllerSettings.FishCount == _hookControllerSettings.Strength)
+                    {
+                        StopFishing();
+                    }
+
+                }
+            }
+        }
+
+
     }
 }

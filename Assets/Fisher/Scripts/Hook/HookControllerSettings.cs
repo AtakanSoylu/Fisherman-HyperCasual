@@ -13,7 +13,17 @@ namespace FisherMan.Hook
         [SerializeField] private float _strength;
         public float Strength { get { return _strength; } }
         [SerializeField] private float _fishCount;
-        public float FishCount { get { return _fishCount; } }
+        public float FishCount
+        {
+            get
+            {
+                return _fishCount;
+            }
+            set
+            {
+                _fishCount = value;
+            }
+        }
 
     }
 }
