@@ -7,7 +7,7 @@ namespace FisherMan.Managers
     [CreateAssetMenu(menuName = "FisherMan/Manager/IdleManagerData")]
     public class IdleManagerData : ScriptableObject
     {
-        private int _lenght = 30;
+        private int _lenght = -30;
         public int Length { get { return _lenght; } set { _lenght = value; } }
 
         private int _strength = 3;
@@ -31,13 +31,16 @@ namespace FisherMan.Managers
         private int _totalGain;
         public int TotalGain { get { return _totalGain; } set { _totalGain = value; } }
 
+        private string _dateTime;
+        public string DateTime { get { return _dateTime; } set { _dateTime = value; } }
+
         //will chance
         [SerializeField] private int[] _uprageCostArray;
         public int[] UprageCostArray { get { return _uprageCostArray; } }
 
         public void StartIdleData()
         {
-            _lengthCost = _uprageCostArray[_lenght / 10 - 3];
+            _lengthCost = _uprageCostArray[-_lenght / 10 - 3];
             _strengthCost = _uprageCostArray[_strength - 3];
             _offlineEarningsCost = _uprageCostArray[_offlineEarnings - 3];
         }

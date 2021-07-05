@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098daa725c4644a41a0c852587b8115f, type: 3}
   m_Name: IdleManagerData
   m_EditorClassIdentifier: 
+  _uprageCostArray: 960000002c010000c201000058020000080700008c0a0000a00f00007017000010270000204e0000
