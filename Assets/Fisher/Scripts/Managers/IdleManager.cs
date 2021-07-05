@@ -14,7 +14,7 @@ namespace FisherMan.Managers
         {
             get
             {
-                if(instance == null)
+                if (instance == null)
                 {
                     instance = new GameObject("IdleManager").AddComponent<IdleManager>();
                 }
@@ -24,7 +24,7 @@ namespace FisherMan.Managers
 
         private void Awake()
         {
-            _idleManagerData.Length
+            _idleManagerData.StartIdleData();
         }
 
     }
