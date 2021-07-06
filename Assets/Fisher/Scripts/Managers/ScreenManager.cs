@@ -18,7 +18,7 @@ namespace FisherMan.Managers
 
     public class ScreenManager : MonoBehaviour
     {
-        public static ScreenManager instance;
+        private static ScreenManager instance;
 
         private GameObject _currentScreen;
 
@@ -57,17 +57,16 @@ namespace FisherMan.Managers
         {
             get
             {
-                /*if (instance == null)
+                if (instance == null)
                 {
                     instance = new GameObject("ScreenManager").AddComponent<ScreenManager>();
-                }*/
+                }
                 return instance;
             }
         }
 
         private void Awake()
         {
-            //sa
             if (instance)
                 Destroy(gameObject);
             else
@@ -83,9 +82,7 @@ namespace FisherMan.Managers
 
         public void ChangeScreen(Screens screen)
         {
-            Debug.Log("girdi");
             _currentScreen.SetActive(false);
-            Debug.Log("cikti");
 
             switch (screen)
             {
@@ -110,7 +107,6 @@ namespace FisherMan.Managers
                     SetReturnScreenMoney();
                     break;
             }
-            Debug.Log("cikti");
 
             _currentScreen.SetActive(true);
         }

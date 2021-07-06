@@ -33,7 +33,7 @@ namespace FisherMan.Managers
             if (paused)
             {
                 DateTime now = DateTime.Now;
-                Debug.Log(now.ToString());
+                _idleManagerData.DateTime = now.ToString();
             }
             else
             {
