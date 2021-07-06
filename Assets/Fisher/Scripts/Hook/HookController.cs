@@ -5,12 +5,14 @@ using DG.Tweening;
 using FisherMan.PlayerInput;
 using FisherMan.Fish;
 using System;
+using FisherMan.Managers;
 
 namespace FisherMan.Hook
 {
     public class HookController : MonoBehaviour
     {
-        [SerializeField] private HookControllerSettings _hookControllerSettings;
+        //[SerializeField] private HookControllerSettings _hookControllerSettings;
+        [SerializeField] private IdleManagerData _idleManagerData;
         [SerializeField] private InputData _inputData;
         [SerializeField] private Transform _hookedTransform;
         [SerializeField] private Camera _mainCamera;
@@ -22,7 +24,8 @@ namespace FisherMan.Hook
         private Sequence _sequence;
 
 
-        private bool canMove = true;
+        private bool _canMove = true;
+        private int _fishCount;
 
         private List<FishController> _hookedFishList;
 
@@ -34,7 +37,7 @@ namespace FisherMan.Hook
 
         private void Update()
         {
-            if (canMove && _inputData.FishingClick)
+            if (_canMove && _inputData.FishingClick)
             {
                 float mouseXPosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition).x;
                 TransformMoveX(mouseXPosition);
@@ -48,10 +51,16 @@ namespace FisherMan.Hook
 
         public void StartFishing()
         {
-            float timeMultiplier = 0.1f;
-            float time = (-_hookControllerSettings.Length) * timeMultiplier;
 
-            _cameraTween = _mainCamera.transform.DOMoveY(_hookControllerSettings.Length, 1 + time * 0.25f, false).OnUpdate(delegate
+            int length = _idleManagerData.Length - 20;
+            int strength = _idleManagerData.Strength;
+            _fishCount = 0; 
+
+
+            float timeMultiplier = 0.1f;
+            float time = (-length) * timeMultiplier;
+
+            _cameraTween = _mainCamera.transform.DOMoveY(length, 1 + time * 0.25f, false).OnUpdate(delegate
             {
                 float exitYCord = -11f;
                 if (_mainCamera.transform.position.y <= exitYCord)
@@ -71,15 +80,15 @@ namespace FisherMan.Hook
 
             });
 
-
+            ScreenManager.Instance.ChangeScreen(Screens.GAME);
             _colider2D.enabled = false;
-            canMove = true;
+            _canMove = true;
             _hookedFishList.Clear();
         }
 
         private void StopFishing()
         {
-            canMove = false;
+            _canMove = false;
             _cameraTween.Kill(false);
             _cameraTween = _mainCamera.transform.DOMoveY(0, 2, false).OnUpdate(delegate
             {
@@ -102,7 +111,12 @@ namespace FisherMan.Hook
                     _hookedFishList[i].ResetFish();
                     num += _hookedFishList[i].fishType.price;
                 }
+                _idleManagerData.TotalGain = num;
+                ScreenManager.Instance.ChangeScreen(Screens.END);
             });
+
+
+
         }
 
         private void OnTriggerEnter2D(Collider2D target)
@@ -110,9 +124,11 @@ namespace FisherMan.Hook
             FishController fish = target.GetComponent<FishController>();
             if (fish != null)
             {
-                if (_hookControllerSettings.Strength != _hookControllerSettings.FishCount)
+                int length = _idleManagerData.Length - 20;
+                int strength = _idleManagerData.Strength;
+                if (_idleManagerData.Strength != _fishCount)
                 {
-                    _hookControllerSettings.FishCount++;
+                    _fishCount++;
                     fish.Hooked();
                     _hookedFishList.Add(fish);
                     fish.transform.SetParent(transform);
@@ -124,7 +140,7 @@ namespace FisherMan.Hook
                     {
                         fish.transform.rotation = Quaternion.identity;
                     });
-                    if (_hookControllerSettings.FishCount == _hookControllerSettings.Strength)
+                    if (_fishCount == _idleManagerData.Strength)
                     {
                         StopFishing();
                     }
