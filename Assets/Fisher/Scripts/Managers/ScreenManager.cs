@@ -28,10 +28,10 @@ namespace FisherMan.Managers
 
         //Screens
         [Header("Screens")]
-        [SerializeField] private GameObject _endScreen;
-        [SerializeField] private GameObject _gameScreen;
-        [SerializeField] private GameObject _mainScreen;
-        [SerializeField] private GameObject _returnScreen;
+        [SerializeField] public GameObject _endScreen;
+        [SerializeField] public GameObject _gameScreen;
+        [SerializeField] public GameObject _mainScreen;
+        [SerializeField] public GameObject _returnScreen;
 
         //Buttons
         [Header("Buttons")]
@@ -51,22 +51,27 @@ namespace FisherMan.Managers
         [SerializeField] private Text _endScreenMoney;
         [SerializeField] private Text _returnScreenMoney;
 
-        private int _gameCount;
+        private int _gameCount = 0;
 
         public static ScreenManager Instance
         {
             get
             {
-                if (instance == null)
+                /*if (instance == null)
                 {
                     instance = new GameObject("ScreenManager").AddComponent<ScreenManager>();
-                }
+                }*/
                 return instance;
             }
         }
 
         private void Awake()
         {
+            //sa
+            if (instance)
+                Destroy(gameObject);
+            else
+                instance = this;
             _currentScreen = _mainScreen;
         }
 
@@ -78,7 +83,10 @@ namespace FisherMan.Managers
 
         public void ChangeScreen(Screens screen)
         {
+            Debug.Log("girdi");
             _currentScreen.SetActive(false);
+            Debug.Log("cikti");
+
             switch (screen)
             {
                 case Screens.MAIN:
@@ -102,6 +110,8 @@ namespace FisherMan.Managers
                     SetReturnScreenMoney();
                     break;
             }
+            Debug.Log("cikti");
+
             _currentScreen.SetActive(true);
         }
 
