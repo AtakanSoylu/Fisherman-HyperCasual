@@ -16,7 +16,7 @@ namespace FisherMan.Managers
         private int _offlineEarnings = 3;
         public int OfflineEarnings { get { return _offlineEarnings; } set { _offlineEarnings = value; } } 
         
-        private int _lengthCost;
+        private int _lengthCost=0;
         public int LengthCost { get { return _lengthCost; } set { _lengthCost = value; } }
 
         private int _strengthCost;
@@ -28,7 +28,7 @@ namespace FisherMan.Managers
         private int _wallet = 0;
         public int Wallet { get { return _wallet; } set { _wallet = value; } }
 
-        private int _totalGain;
+        private int _totalGain=0;
         public int TotalGain { get { return _totalGain; } set { _totalGain = value; } }
 
         private string _dateTime;

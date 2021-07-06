@@ -42,7 +42,7 @@ namespace FisherMan.Managers
                 {
                     DateTime dateTime = DateTime.Parse(@dateTimeString);
                     _idleManagerData.TotalGain = (int)((DateTime.Now - dateTime).TotalMinutes * _idleManagerData.OfflineEarnings + 1.0f);
-                    Debug.Log(_idleManagerData.TotalGain);
+                    ScreenManager.Instance.ChangeScreen(Screens.RETURN);
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace FisherMan.Managers
             _idleManagerData.Length -= 10;
             _idleManagerData.Wallet -= _idleManagerData.LengthCost;
             _idleManagerData.LengthCost = _idleManagerData.UprageCostArray[-_idleManagerData.Length / 10 - 3];
-            //ScreenManager MAIN
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         //FOR BUY STRENGTH BUTTON
@@ -67,7 +67,7 @@ namespace FisherMan.Managers
             _idleManagerData.Strength++;
             _idleManagerData.Wallet -= _idleManagerData.StrengthCost;
             _idleManagerData.StrengthCost = _idleManagerData.UprageCostArray[_idleManagerData.Strength - 3];
-            //ScreenManager MAIN
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         //FOR BUY OFFLINE EARNING BUTTON
@@ -76,19 +76,19 @@ namespace FisherMan.Managers
             _idleManagerData.OfflineEarnings++;
             _idleManagerData.Wallet -= _idleManagerData.OfflineEarningsCost;
             _idleManagerData.OfflineEarningsCost = _idleManagerData.UprageCostArray[_idleManagerData.OfflineEarnings - 3];
-            //ScreenManager MAIN
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         public void CollectMoney()
         {
             _idleManagerData.Wallet += _idleManagerData.TotalGain;
-            //BACK TO MAIN    
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
         public void CollectDoubleMoney()
         {
             _idleManagerData.Wallet += _idleManagerData.TotalGain * 2;
-            //BACK TO MAIN    
+            ScreenManager.Instance.ChangeScreen(Screens.MAIN);
         }
 
     }
